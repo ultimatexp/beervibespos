@@ -43,6 +43,8 @@ function createSale_(sale) {
     sale.note,
     sale.totalQty,
     sale.totalAmount,
+    sale.totalCost,
+    sale.grossProfit,
     JSON.stringify(sale.items),
   ];
 

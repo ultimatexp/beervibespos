@@ -11,9 +11,7 @@ const els = {
   grandTotal: document.querySelector("#grand-total"),
   saleForm: document.querySelector("#sale-form"),
   saleMessage: document.querySelector("#sale-message"),
-  paymentMethod: document.querySelector("#payment-method"),
-  customerName: document.querySelector("#customer-name"),
-  saleNote: document.querySelector("#sale-note"),
+  submitSale: document.querySelector("#submit-sale"),
   reloadProducts: document.querySelector("#reload-products"),
   profileStatus: document.querySelector("#profile-status"),
   profileName: document.querySelector("#profile-name"),
@@ -41,7 +39,7 @@ function bindEvents() {
 
 async function initLiffProfile() {
   if (!window.liff || !config.LIFF_ID) {
-    updateProfileView(null, "ยังไม่ได้ตั้งค่า LIFF_ID");
+    updateProfileView(null, "ต้องตั้งค่า LIFF_ID ก่อนขาย");
     return;
   }
 
@@ -63,15 +61,16 @@ async function initLiffProfile() {
     updateProfileView(state.profile, "เชื่อมต่อ LINE แล้ว");
   } catch (error) {
     console.error(error);
-    updateProfileView(null, "เชื่อมต่อ LINE ไม่สำเร็จ");
+    updateProfileView(null, "กรุณาเข้าสู่ระบบ LINE");
   }
 }
 
 function updateProfileView(profile, status) {
   els.profileStatus.textContent = status;
-  els.profileName.textContent = profile?.displayName || "Guest";
+  els.profileName.textContent = profile?.displayName || "ยังไม่ได้เข้าสู่ระบบ";
   els.profileId.textContent = profile?.userId || "-";
   els.profileImage.src = profile?.pictureUrl || "https://placehold.co/112x112?text=LINE";
+  els.submitSale.disabled = !profile?.userId;
 }
 
 async function loadProducts() {
@@ -99,20 +98,12 @@ function renderProducts() {
     const qty = state.cart.get(product.sku)?.qty || 0;
     return `
       <article class="product-card">
-        <div class="product-top">
-          <div>
-            <h3>${product.name}</h3>
-            <p class="subtle">SKU: ${product.sku}</p>
-          </div>
-          <div class="price-tag">${formatMoney(product.price)}</div>
-        </div>
-        <div class="product-top">
-          <span class="subtle">คงเหลือ ${product.stock} ขวด</span>
-          <div class="qty-controls">
-            <button class="small-button" type="button" data-action="decrease" data-sku="${product.sku}">-</button>
-            <span class="qty-pill">${qty}</span>
-            <button class="small-button" type="button" data-action="increase" data-sku="${product.sku}">+</button>
-          </div>
+        <img class="product-image" src="${product.image}" alt="${product.name}">
+        <div class="product-actions">
+          <strong class="stock-count">คงเหลือ ${product.stock}</strong>
+          <button class="qty-button" type="button" data-action="decrease" data-sku="${product.sku}" aria-label="ลด ${product.name}">-</button>
+          <span class="qty-pill">${qty}</span>
+          <button class="qty-button" type="button" data-action="increase" data-sku="${product.sku}" aria-label="เพิ่ม ${product.name}">+</button>
         </div>
       </article>
     `;
@@ -144,7 +135,7 @@ function renderCart() {
   const items = Array.from(state.cart.values());
 
   if (!items.length) {
-    els.cartList.innerHTML = `<div class="empty-state">ยังไม่มีสินค้าในบิล</div>`;
+    els.cartList.innerHTML = `<div class="empty-state">ยังไม่มีสินค้า</div>`;
     els.totalQty.textContent = "0";
     els.grandTotal.textContent = formatMoney(0);
     return;
@@ -194,23 +185,42 @@ async function handleSubmitSale(event) {
     return;
   }
 
+  if (!state.profile?.userId) {
+    setFeedback(els.saleMessage, "กรุณาเข้าสู่ระบบ LINE ก่อนขาย");
+    return;
+  }
+
   if (!config.APPS_SCRIPT_URL) {
     setFeedback(els.saleMessage, "ยังไม่ได้ตั้งค่า APPS_SCRIPT_URL");
     return;
   }
 
+  const saleItems = items.map((item) => ({
+    sku: item.sku,
+    name: item.name,
+    qty: item.qty,
+    price: item.price,
+    cost: Number(item.cost || 0),
+    lineTotal: item.qty * item.price,
+    lineCost: item.qty * Number(item.cost || 0),
+  }));
+  const totalAmount = saleItems.reduce((sum, item) => sum + item.lineTotal, 0);
+  const totalCost = saleItems.reduce((sum, item) => sum + item.lineCost, 0);
+
   const payload = {
     action: "createSale",
     sale: {
       createdAt: new Date().toISOString(),
-      lineUserId: state.profile?.userId || "",
-      lineDisplayName: state.profile?.displayName || "Guest",
-      customerName: els.customerName.value.trim(),
-      paymentMethod: els.paymentMethod.value,
-      note: els.saleNote.value.trim(),
-      totalQty: items.reduce((sum, item) => sum + item.qty, 0),
-      totalAmount: items.reduce((sum, item) => sum + item.qty * item.price, 0),
-      items,
+      lineUserId: state.profile.userId,
+      lineDisplayName: state.profile.displayName,
+      customerName: "",
+      paymentMethod: "",
+      note: "",
+      totalQty: saleItems.reduce((sum, item) => sum + item.qty, 0),
+      totalAmount,
+      totalCost,
+      grossProfit: totalAmount - totalCost,
+      items: saleItems,
     },
   };
 

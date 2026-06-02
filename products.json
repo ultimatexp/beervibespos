@@ -3,21 +3,27 @@
     "sku": "CHANG-BOTTLE",
     "name": "เบียร์ช้างขวด",
     "price": 75,
+    "cost": 52,
     "stock": 48,
+    "image": "./assets/products/chang.svg",
     "active": true
   },
   {
     "sku": "LEO-BOTTLE",
     "name": "เบียร์ลีโอขวด",
     "price": 75,
+    "cost": 51,
     "stock": 48,
+    "image": "./assets/products/leo.svg",
     "active": true
   },
   {
     "sku": "SINGHA-BOTTLE",
     "name": "เบียร์สิงห์ขวด",
     "price": 80,
+    "cost": 56,
     "stock": 36,
+    "image": "./assets/products/singha.svg",
     "active": true
   }
 ]

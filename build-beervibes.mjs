@@ -17,15 +17,15 @@ const sales = workbook.worksheets.add("Sales");
 const stockLogs = workbook.worksheets.add("Stock Logs");
 const instructions = workbook.worksheets.add("Instructions");
 
-products.getRange("A1:F4").values = [
-  ["sku", "name", "price", "stock", "active", "category"],
-  ["CHANG-BOTTLE", "เบียร์ช้างขวด", 75, 48, true, "Beer"],
-  ["LEO-BOTTLE", "เบียร์ลีโอขวด", 75, 48, true, "Beer"],
-  ["SINGHA-BOTTLE", "เบียร์สิงห์ขวด", 80, 36, true, "Beer"],
+products.getRange("A1:G4").values = [
+  ["sku", "name", "price", "cost", "stock", "active", "category"],
+  ["CHANG-BOTTLE", "เบียร์ช้างขวด", 75, 52, 48, true, "Beer"],
+  ["LEO-BOTTLE", "เบียร์ลีโอขวด", 75, 51, 48, true, "Beer"],
+  ["SINGHA-BOTTLE", "เบียร์สิงห์ขวด", 80, 56, 36, true, "Beer"],
 ];
 
-sales.getRange("A1:J1").values = [
-  ["sale_id", "created_at", "line_user_id", "line_display_name", "customer_name", "payment_method", "note", "total_qty", "total_amount", "items_json"],
+sales.getRange("A1:L1").values = [
+  ["sale_id", "created_at", "line_user_id", "line_display_name", "customer_name", "payment_method", "note", "total_qty", "total_amount", "total_cost", "gross_profit", "items_json"],
 ];
 
 stockLogs.getRange("A1:G1").values = [
@@ -52,12 +52,12 @@ dashboard.getRange("A1:F16").values = [
 ];
 
 dashboard.getRange("B5").formulas = [["=COUNTA(Products!A2:A200)"]];
-dashboard.getRange("B6").formulas = [["=SUM(Products!D2:D200)"]];
+dashboard.getRange("B6").formulas = [["=SUM(Products!E2:E200)"]];
 dashboard.getRange("B7").formulas = [["=COUNTA(Sales!A2:A1000)"]];
 dashboard.getRange("B8").formulas = [["=SUM(Sales!I2:I1000)"]];
-dashboard.getRange("E5").formulas = [["=Products!D2"]];
-dashboard.getRange("E6").formulas = [["=Products!D3"]];
-dashboard.getRange("E7").formulas = [["=Products!D4"]];
+dashboard.getRange("E5").formulas = [["=Products!E2"]];
+dashboard.getRange("E6").formulas = [["=Products!E3"]];
+dashboard.getRange("E7").formulas = [["=Products!E4"]];
 
 instructions.getRange("A1:B12").values = [
   ["Step", "Detail"],
@@ -80,11 +80,11 @@ dashboard.getRange("B1:B16").format.columnWidthPx = 170;
 dashboard.getRange("D1:D16").format.columnWidthPx = 240;
 dashboard.getRange("E1:E16").format.columnWidthPx = 120;
 
-products.getRange("A1:F10").format.columnWidthPx = 140;
+products.getRange("A1:G10").format.columnWidthPx = 140;
 products.getRange("B1:B10").format.columnWidthPx = 220;
-sales.getRange("A1:J20").format.columnWidthPx = 160;
+sales.getRange("A1:L20").format.columnWidthPx = 160;
 sales.getRange("D1:D20").format.columnWidthPx = 180;
-sales.getRange("J1:J20").format.columnWidthPx = 260;
+sales.getRange("L1:L20").format.columnWidthPx = 260;
 stockLogs.getRange("A1:G20").format.columnWidthPx = 170;
 instructions.getRange("A1:B20").format.columnWidthPx = 180;
 instructions.getRange("B1:B20").format.columnWidthPx = 520;

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 260" role="img" aria-label="Leo beer bottle">
+  <rect width="220" height="260" fill="#f7f4ee"/>
+  <path d="M94 30h32v40c0 12 13 22 13 44v95c0 16-12 29-29 29s-29-13-29-29v-95c0-22 13-32 13-44V30Z" fill="#9a2e27"/>
+  <rect x="78" y="112" width="64" height="66" rx="9" fill="#f8f0d2"/>
+  <path d="M96 30h28v15H96z" fill="#76231d"/>
+  <text x="110" y="151" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#9a2e27">LEO</text>
+</svg>

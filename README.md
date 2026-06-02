@@ -9,7 +9,7 @@
 - `style.css` สไตล์กลาง
 - `app.js` logic หน้าขาย
 - `stock.js` logic หน้าสต๊อก
-- `products.json` สินค้าตั้งต้น
+- `products.json` สินค้าตั้งต้น พร้อม `cost` ต้นทุนต่อหน่วย และ `image` รูปสินค้า
 - `config.js` ค่า config ที่ต้องแก้ก่อน deploy
 - `config.example.js` ตัวอย่าง config
 - `apps-script.gs` โค้ดฝั่ง Google Apps Script
@@ -28,8 +28,10 @@
 คอลัมน์:
 
 ```text
-sale_id | created_at | line_user_id | line_display_name | customer_name | payment_method | note | total_qty | total_amount | items_json
+sale_id | created_at | line_user_id | line_display_name | customer_name | payment_method | note | total_qty | total_amount | total_cost | gross_profit | items_json
 ```
+
+ใน `items_json` แต่ละรายการจะมี `cost`, `lineTotal`, และ `lineCost`
 
 ### `stock_logs`
 

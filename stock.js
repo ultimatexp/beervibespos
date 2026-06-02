@@ -30,7 +30,7 @@ function bindEvents() {
 
 async function initLiffProfile() {
   if (!window.liff || !config.LIFF_ID) {
-    updateProfileView(null, "ยังไม่ได้ตั้งค่า LIFF_ID");
+    updateProfileView(null, "ต้องตั้งค่า LIFF_ID ก่อนแก้สต๊อก");
     return;
   }
 
@@ -52,13 +52,13 @@ async function initLiffProfile() {
     updateProfileView(state.profile, "เชื่อมต่อ LINE แล้ว");
   } catch (error) {
     console.error(error);
-    updateProfileView(null, "เชื่อมต่อ LINE ไม่สำเร็จ");
+    updateProfileView(null, "กรุณาเข้าสู่ระบบ LINE");
   }
 }
 
 function updateProfileView(profile, status) {
   els.profileStatus.textContent = status;
-  els.profileName.textContent = profile?.displayName || "Guest";
+  els.profileName.textContent = profile?.displayName || "ยังไม่ได้เข้าสู่ระบบ";
   els.profileId.textContent = profile?.userId || "-";
   els.profileImage.src = profile?.pictureUrl || "https://placehold.co/112x112?text=LINE";
 }
@@ -117,6 +117,11 @@ async function handleStockSubmit(event) {
     return;
   }
 
+  if (!state.profile?.userId) {
+    setFeedback("กรุณาเข้าสู่ระบบ LINE ก่อนแก้สต๊อก");
+    return;
+  }
+
   const form = event.currentTarget;
   const sku = form.dataset.sku;
   const quantity = Number(form.quantity.value);
@@ -138,8 +143,8 @@ async function handleStockSubmit(event) {
       productName: product.name,
       quantity,
       reason,
-      lineUserId: state.profile?.userId || "",
-      lineDisplayName: state.profile?.displayName || "Guest",
+      lineUserId: state.profile.userId,
+      lineDisplayName: state.profile.displayName,
     },
   };
 
