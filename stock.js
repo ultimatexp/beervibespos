@@ -65,16 +65,57 @@ function updateProfileView(profile, status) {
 
 async function loadProducts() {
   try {
-    const response = await fetch("./products.json", { cache: "no-store" });
-    if (!response.ok) {
-      throw new Error("โหลดสินค้าไม่สำเร็จ");
-    }
-
-    state.products = await response.json();
+    const localProducts = await loadLocalProducts_();
+    state.products = isConfiguredAppsScriptUrl(config.APPS_SCRIPT_URL)
+      ? await loadProductsFromDatabase_(localProducts)
+      : localProducts;
   } catch (error) {
     console.error(error);
     els.stockList.innerHTML = `<div class="empty-state">ไม่สามารถโหลดสินค้าได้</div>`;
   }
+}
+
+function isConfiguredAppsScriptUrl(url) {
+  if (!url || url.includes("REPLACE_WITH_YOUR_APPS_SCRIPT_WEB_APP_URL")) return false;
+
+  try {
+    const parsedUrl = new URL(url.trim());
+    return parsedUrl.protocol === "https:" || parsedUrl.protocol === "http:";
+  } catch {
+    return false;
+  }
+}
+
+async function loadLocalProducts_() {
+  const response = await fetch("./products.json", { cache: "no-store" });
+  if (!response.ok) {
+    throw new Error("โหลดสินค้าไม่สำเร็จ");
+  }
+
+  return response.json();
+}
+
+async function loadProductsFromDatabase_(localProducts) {
+  const productsUrl = new URL(config.APPS_SCRIPT_URL.trim());
+  productsUrl.searchParams.set("action", "getProducts");
+  productsUrl.searchParams.set("_", String(Date.now()));
+
+  const response = await fetch(productsUrl.toString(), { method: "GET" });
+  const text = await response.text();
+  if (/accounts\.google\.com|<html/i.test(text)) {
+    throw new Error("DB ต้องเปิดสิทธิ์ Anyone");
+  }
+
+  const result = JSON.parse(text);
+  if (!response.ok || !result.ok || !Array.isArray(result.products)) {
+    throw new Error(result.message || "โหลดสินค้าจากฐานข้อมูลไม่สำเร็จ");
+  }
+
+  const imageBySku = new Map(localProducts.map((product) => [product.sku, product.image]));
+  return result.products.map((product) => ({
+    ...product,
+    image: imageBySku.get(product.sku) || "",
+  }));
 }
 
 function renderStock() {
