@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POS on LINE LIFF</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body data-page="pos">
+  <main class="shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">LINE LIFF POS</p>
+        <h1>หน้าขายสินค้า</h1>
+        <p class="subtle">บันทึกการขายลง Google Sheets ผ่าน Apps Script</p>
+      </div>
+      <nav class="topnav">
+        <a class="navlink active" href="./index.html">ขายสินค้า</a>
+        <a class="navlink" href="./stock.html">สต๊อก</a>
+      </nav>
+    </header>
+
+    <section class="panel identity-panel">
+      <div>
+        <h2>พนักงานขาย</h2>
+        <p id="profile-status" class="subtle">กำลังเชื่อมต่อ LINE...</p>
+      </div>
+      <div class="profile-card">
+        <img id="profile-image" class="avatar" alt="LINE profile">
+        <div>
+          <p id="profile-name" class="value">ยังไม่ได้เชื่อมต่อ</p>
+          <p id="profile-id" class="subtle">-</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <section class="panel">
+        <div class="section-head">
+          <h2>สินค้า</h2>
+          <button id="reload-products" class="ghost-button" type="button">โหลดใหม่</button>
+        </div>
+        <div id="product-list" class="product-list"></div>
+      </section>
+
+      <section class="panel">
+        <h2>สรุปรายการขาย</h2>
+        <form id="sale-form" class="stack">
+          <div id="cart-list" class="cart-list"></div>
+
+          <label class="field">
+            <span>ชื่อลูกค้า</span>
+            <input id="customer-name" name="customerName" type="text" placeholder="ไม่กรอกก็ได้">
+          </label>
+
+          <label class="field">
+            <span>ช่องทางชำระเงิน</span>
+            <select id="payment-method" name="paymentMethod">
+              <option value="cash">เงินสด</option>
+              <option value="transfer">โอน</option>
+              <option value="promptpay">PromptPay</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>หมายเหตุ</span>
+            <textarea id="sale-note" name="note" rows="3" placeholder="เช่น โต๊ะ 4 / ลูกค้าประจำ"></textarea>
+          </label>
+
+          <div class="summary-box">
+            <div class="summary-row">
+              <span>จำนวนรวม</span>
+              <strong id="total-qty">0</strong>
+            </div>
+            <div class="summary-row total">
+              <span>ยอดรวม</span>
+              <strong id="grand-total">0.00 บาท</strong>
+            </div>
+          </div>
+
+          <button id="submit-sale" class="primary-button" type="submit">บันทึกการขาย</button>
+          <p id="sale-message" class="feedback" aria-live="polite"></p>
+        </form>
+      </section>
+    </section>
+  </main>
+
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <script src="./config.js"></script>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

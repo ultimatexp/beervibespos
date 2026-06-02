@@ -1,0 +1,23 @@
+[
+  {
+    "sku": "CHANG-BOTTLE",
+    "name": "เบียร์ช้างขวด",
+    "price": 75,
+    "stock": 48,
+    "active": true
+  },
+  {
+    "sku": "LEO-BOTTLE",
+    "name": "เบียร์ลีโอขวด",
+    "price": 75,
+    "stock": 48,
+    "active": true
+  },
+  {
+    "sku": "SINGHA-BOTTLE",
+    "name": "เบียร์สิงห์ขวด",
+    "price": 80,
+    "stock": 36,
+    "active": true
+  }
+]

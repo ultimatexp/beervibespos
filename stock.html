@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock Manager</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body data-page="stock">
+  <main class="shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">LINE LIFF POS</p>
+        <h1>จัดการสต๊อก</h1>
+        <p class="subtle">ปรับยอดคงเหลือและบันทึกเข้า Google Sheets</p>
+      </div>
+      <nav class="topnav">
+        <a class="navlink" href="./index.html">ขายสินค้า</a>
+        <a class="navlink active" href="./stock.html">สต๊อก</a>
+      </nav>
+    </header>
+
+    <section class="panel identity-panel">
+      <div>
+        <h2>ผู้แก้ไขสต๊อก</h2>
+        <p id="profile-status" class="subtle">กำลังเชื่อมต่อ LINE...</p>
+      </div>
+      <div class="profile-card">
+        <img id="profile-image" class="avatar" alt="LINE profile">
+        <div>
+          <p id="profile-name" class="value">ยังไม่ได้เชื่อมต่อ</p>
+          <p id="profile-id" class="subtle">-</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-head">
+        <h2>รายการสต๊อก</h2>
+        <button id="reload-products" class="ghost-button" type="button">โหลดใหม่</button>
+      </div>
+      <div id="stock-list" class="stock-list"></div>
+      <p id="stock-message" class="feedback" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <script src="./config.js"></script>
+  <script type="module" src="./stock.js"></script>
+</body>
+</html>
