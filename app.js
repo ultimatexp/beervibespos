@@ -95,7 +95,7 @@ async function loadProducts() {
 }
 
 async function checkDatabaseConnection() {
-  if (!config.APPS_SCRIPT_URL) {
+  if (!isConfiguredAppsScriptUrl(config.APPS_SCRIPT_URL)) {
     updateDatabaseStatus("ยังไม่ได้ตั้งค่า DB", "offline");
     return;
   }
@@ -103,12 +103,16 @@ async function checkDatabaseConnection() {
   updateDatabaseStatus("กำลังตรวจสอบฐานข้อมูล...", "pending");
 
   try {
-    const response = await fetch(config.APPS_SCRIPT_URL, {
-      method: "GET",
-      cache: "no-store",
-    });
+    const healthUrl = new URL(config.APPS_SCRIPT_URL.trim());
+    healthUrl.searchParams.set("_", String(Date.now()));
 
-    const result = await response.json();
+    const response = await fetch(healthUrl.toString(), { method: "GET" });
+    const text = await response.text();
+    if (/accounts\.google\.com|<html/i.test(text)) {
+      throw new Error("DB ต้องเปิดสิทธิ์ Anyone");
+    }
+
+    const result = JSON.parse(text);
     if (!response.ok || !result.ok) {
       throw new Error(result.message || "เชื่อมต่อฐานข้อมูลไม่สำเร็จ");
     }
@@ -116,13 +120,24 @@ async function checkDatabaseConnection() {
     updateDatabaseStatus("ฐานข้อมูลพร้อมใช้งาน", "online");
   } catch (error) {
     console.error(error);
-    updateDatabaseStatus("ฐานข้อมูลไม่พร้อมใช้งาน", "offline");
+    updateDatabaseStatus(error.message || "ฐานข้อมูลไม่พร้อมใช้งาน", "offline");
   }
 }
 
 function updateDatabaseStatus(message, status) {
   els.dbStatusText.textContent = message;
   els.dbStatusDot.className = `db-status-dot db-status-${status}`;
+}
+
+function isConfiguredAppsScriptUrl(url) {
+  if (!url || url.includes("REPLACE_WITH_YOUR_APPS_SCRIPT_WEB_APP_URL")) return false;
+
+  try {
+    const parsedUrl = new URL(url.trim());
+    return parsedUrl.protocol === "https:" || parsedUrl.protocol === "http:";
+  } catch {
+    return false;
+  }
 }
 
 function renderProducts() {
