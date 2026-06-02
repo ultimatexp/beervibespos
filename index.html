@@ -8,41 +8,15 @@
 </head>
 <body data-page="pos">
   <main class="shell">
-    <header class="hero compact-hero">
-      <div>
-        <p class="eyebrow">LINE LIFF POS</p>
-        <h1>ขาย</h1>
+    <section class="panel product-panel">
+      <div class="section-head">
+        <h2>สินค้า</h2>
+        <button id="reload-products" class="ghost-button" type="button">โหลดใหม่</button>
       </div>
-      <nav class="topnav">
-        <a class="navlink active" href="./index.html">ขายสินค้า</a>
-        <a class="navlink" href="./stock.html">สต๊อก</a>
-      </nav>
-    </header>
-
-    <section class="panel identity-panel">
-      <div>
-        <h2>พนักงานขาย</h2>
-        <p id="profile-status" class="subtle">กำลังเชื่อมต่อ LINE...</p>
-      </div>
-      <div class="profile-card">
-        <img id="profile-image" class="avatar" alt="LINE profile">
-        <div>
-          <p id="profile-name" class="value">ยังไม่ได้เชื่อมต่อ</p>
-          <p id="profile-id" class="subtle">-</p>
-        </div>
-      </div>
+      <div id="product-list" class="product-list"></div>
     </section>
 
-    <section class="pos-layout">
-      <section class="panel product-panel">
-        <div class="section-head">
-          <h2>สินค้า</h2>
-          <button id="reload-products" class="ghost-button" type="button">โหลดใหม่</button>
-        </div>
-        <div id="product-list" class="product-list"></div>
-      </section>
-
-      <section class="panel">
+    <section class="panel sale-panel">
         <h2>สรุปรายการขาย</h2>
         <form id="sale-form" class="stack">
           <div id="cart-list" class="cart-list"></div>
@@ -61,8 +35,25 @@
           <button id="submit-sale" class="primary-button confirm-button" type="submit">ยืนยัน</button>
           <p id="sale-message" class="feedback" aria-live="polite"></p>
         </form>
-      </section>
     </section>
+
+    <header class="hero compact-hero top-shell">
+      <div>
+        <p class="eyebrow">LINE LIFF POS</p>
+        <h1>ขายสินค้า</h1>
+      </div>
+      <div class="top-shell-actions">
+        <nav class="topnav">
+          <a class="navlink active" href="./index.html">ขายสินค้า</a>
+          <a class="navlink" href="./stock.html">สต๊อก</a>
+        </nav>
+        <div class="seller-chip" aria-label="สถานะการเชื่อมต่อ LINE">
+          <span id="profile-status-dot" class="status-dot status-pending"></span>
+          <img id="profile-image" class="avatar" alt="LINE profile">
+        </div>
+      </div>
+      <p id="profile-status" class="sr-only" aria-live="polite">กำลังเชื่อมต่อ LINE...</p>
+    </header>
   </main>
 
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>

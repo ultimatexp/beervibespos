@@ -14,8 +14,7 @@ const els = {
   submitSale: document.querySelector("#submit-sale"),
   reloadProducts: document.querySelector("#reload-products"),
   profileStatus: document.querySelector("#profile-status"),
-  profileName: document.querySelector("#profile-name"),
-  profileId: document.querySelector("#profile-id"),
+  profileStatusDot: document.querySelector("#profile-status-dot"),
   profileImage: document.querySelector("#profile-image"),
 };
 
@@ -67,9 +66,9 @@ async function initLiffProfile() {
 
 function updateProfileView(profile, status) {
   els.profileStatus.textContent = status;
-  els.profileName.textContent = profile?.displayName || "ยังไม่ได้เข้าสู่ระบบ";
-  els.profileId.textContent = profile?.userId || "-";
   els.profileImage.src = profile?.pictureUrl || "https://placehold.co/112x112?text=LINE";
+  els.profileImage.alt = profile?.displayName || "LINE profile";
+  els.profileStatusDot.className = `status-dot ${profile?.userId ? "status-online" : "status-offline"}`;
   els.submitSale.disabled = !profile?.userId;
 }
 
@@ -99,8 +98,11 @@ function renderProducts() {
     return `
       <article class="product-card">
         <img class="product-image" src="${product.image}" alt="${product.name}">
-        <div class="product-actions">
+        <div class="product-meta">
+          <strong class="price-tag">${formatMoney(product.price)}</strong>
           <strong class="stock-count">คงเหลือ ${product.stock}</strong>
+        </div>
+        <div class="product-actions">
           <button class="qty-button" type="button" data-action="decrease" data-sku="${product.sku}" aria-label="ลด ${product.name}">-</button>
           <span class="qty-pill">${qty}</span>
           <button class="qty-button" type="button" data-action="increase" data-sku="${product.sku}" aria-label="เพิ่ม ${product.name}">+</button>

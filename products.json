@@ -5,7 +5,7 @@
     "price": 75,
     "cost": 52,
     "stock": 48,
-    "image": "./assets/products/chang.svg",
+    "image": "./assets/products/chang.webp",
     "active": true
   },
   {
@@ -14,7 +14,7 @@
     "price": 75,
     "cost": 51,
     "stock": 48,
-    "image": "./assets/products/leo.svg",
+    "image": "./assets/products/leo.jpeg",
     "active": true
   },
   {
@@ -23,7 +23,7 @@
     "price": 80,
     "cost": 56,
     "stock": 36,
-    "image": "./assets/products/singha.svg",
+    "image": "./assets/products/Singha.jpg",
     "active": true
   }
 ]

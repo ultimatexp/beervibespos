@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 260" role="img" aria-label="Singha beer bottle">
-  <rect width="220" height="260" fill="#f7f4ee"/>
-  <path d="M94 30h32v40c0 12 13 22 13 44v95c0 16-12 29-29 29s-29-13-29-29v-95c0-22 13-32 13-44V30Z" fill="#b87d22"/>
-  <rect x="78" y="112" width="64" height="66" rx="9" fill="#fff5d8"/>
-  <path d="M96 30h28v15H96z" fill="#8d601b"/>
-  <text x="110" y="151" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#8d601b">SINGHA</text>
-</svg>
