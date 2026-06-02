@@ -211,6 +211,64 @@ p {
   margin-bottom: 20px;
 }
 
+.db-status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #faf9f4;
+}
+
+.db-status-copy {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+}
+
+.db-status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #b9bbb3;
+  flex: 0 0 auto;
+}
+
+.db-status-pending {
+  background: #d2a33b;
+}
+
+.db-status-online {
+  background: #0a9b62;
+}
+
+.db-status-offline {
+  background: #b8442f;
+}
+
+.icon-button {
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.icon-button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 .product-list,
 .stock-list,
 .cart-list,
@@ -435,6 +493,10 @@ textarea {
   .top-shell-actions {
     width: 100%;
     justify-content: space-between;
+  }
+
+  .db-status-bar {
+    align-items: flex-start;
   }
 }
 

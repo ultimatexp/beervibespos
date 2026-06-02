@@ -13,6 +13,9 @@ const els = {
   saleMessage: document.querySelector("#sale-message"),
   submitSale: document.querySelector("#submit-sale"),
   reloadProducts: document.querySelector("#reload-products"),
+  testDbConnection: document.querySelector("#test-db-connection"),
+  dbStatusDot: document.querySelector("#db-status-dot"),
+  dbStatusText: document.querySelector("#db-status-text"),
   profileStatus: document.querySelector("#profile-status"),
   profileStatusDot: document.querySelector("#profile-status-dot"),
   profileImage: document.querySelector("#profile-image"),
@@ -22,7 +25,7 @@ const config = window.APP_CONFIG || {};
 
 document.addEventListener("DOMContentLoaded", async () => {
   bindEvents();
-  await Promise.all([initLiffProfile(), loadProducts()]);
+  await Promise.all([initLiffProfile(), loadProducts(), checkDatabaseConnection()]);
   renderProducts();
   renderCart();
 });
@@ -31,6 +34,10 @@ function bindEvents() {
   els.reloadProducts.addEventListener("click", async () => {
     await loadProducts();
     renderProducts();
+  });
+
+  els.testDbConnection.addEventListener("click", () => {
+    checkDatabaseConnection();
   });
 
   els.saleForm.addEventListener("submit", handleSubmitSale);
@@ -85,6 +92,37 @@ async function loadProducts() {
     console.error(error);
     els.productList.innerHTML = `<div class="empty-state">ไม่สามารถโหลดสินค้าได้</div>`;
   }
+}
+
+async function checkDatabaseConnection() {
+  if (!config.APPS_SCRIPT_URL) {
+    updateDatabaseStatus("ยังไม่ได้ตั้งค่า DB", "offline");
+    return;
+  }
+
+  updateDatabaseStatus("กำลังตรวจสอบฐานข้อมูล...", "pending");
+
+  try {
+    const response = await fetch(config.APPS_SCRIPT_URL, {
+      method: "GET",
+      cache: "no-store",
+    });
+
+    const result = await response.json();
+    if (!response.ok || !result.ok) {
+      throw new Error(result.message || "เชื่อมต่อฐานข้อมูลไม่สำเร็จ");
+    }
+
+    updateDatabaseStatus("ฐานข้อมูลพร้อมใช้งาน", "online");
+  } catch (error) {
+    console.error(error);
+    updateDatabaseStatus("ฐานข้อมูลไม่พร้อมใช้งาน", "offline");
+  }
+}
+
+function updateDatabaseStatus(message, status) {
+  els.dbStatusText.textContent = message;
+  els.dbStatusDot.className = `db-status-dot db-status-${status}`;
 }
 
 function renderProducts() {

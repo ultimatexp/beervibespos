@@ -13,6 +13,13 @@
         <h2>สินค้า</h2>
         <button id="reload-products" class="ghost-button" type="button">โหลดใหม่</button>
       </div>
+      <div class="db-status-bar" aria-live="polite">
+        <div class="db-status-copy">
+          <span id="db-status-dot" class="db-status-dot db-status-pending"></span>
+          <span id="db-status-text">กำลังตรวจสอบฐานข้อมูล...</span>
+        </div>
+        <button id="test-db-connection" class="icon-button" type="button" aria-label="ทดสอบการเชื่อมต่อฐานข้อมูล" title="ทดสอบการเชื่อมต่อฐานข้อมูล">↻</button>
+      </div>
       <div id="product-list" class="product-list"></div>
     </section>
 
