@@ -99,7 +99,10 @@ function renderProducts() {
       <article class="product-card">
         <img class="product-image" src="${product.image}" alt="${product.name}">
         <div class="product-meta">
-          <strong class="price-tag">${formatMoney(product.price)}</strong>
+          <div class="price-block">
+            <span class="price-label">ราคา</span>
+            <strong class="price-tag">${formatMoney(product.price)}</strong>
+          </div>
           <strong class="stock-count">คงเหลือ ${product.stock}</strong>
         </div>
         <div class="product-actions">
